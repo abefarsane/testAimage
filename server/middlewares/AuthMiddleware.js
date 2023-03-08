@@ -6,7 +6,7 @@ const {verify} =  require('jsonwebtoken')
 const validateToken = (req, res, next) => {
     let accessToken = req.header('authorization')
     accessToken = accessToken.split(' ')[1]
-    console.log(accessToken)
+
 
     if (!accessToken) {
         req.error = "Utente non autenticato. Fare il login."
@@ -17,6 +17,7 @@ const validateToken = (req, res, next) => {
         const validToken = verify(accessToken, "access")
 
         if(validToken) {
+            console.log(validToken)
             req.userId = validToken.userId
             return next()
         }

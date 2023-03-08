@@ -104,7 +104,7 @@ export const AuthContextProvider = ({children}) => {
                 } else {
                     localStorage.setItem('access', response.data.token)
 
-                    resolve(localStorage.getItem('access'))
+                    resolve(response.data.token)
                 }
             })
         })

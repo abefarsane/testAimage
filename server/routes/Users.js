@@ -91,10 +91,11 @@ router.post('/login', async (req, res) => {
 
 
 router.get('/user-info', validateToken, async (req, res) => {
+
     if (req.userId) {
         const User = await Users.findOne({ where: { id: req.userId}})
         res.json(User)
-    } else {
+    } else if(req.error) {
         res.json({
             error: req.error
         })
@@ -111,9 +112,9 @@ router.post('/renewAccessToken', (req, res) => {
         res.json({ error: "Sessione non valida. L'utente non è autenticato."})
     }
 
-    verify(refreshToken, "refresh", (err, userId) => {
+    verify(refreshToken, "refresh", (err, user) => {
         if (!err) {
-            const accessToken = sign({userId: userId}, 'access', { expiresIn: '20s'})
+            const accessToken = sign({userId: user.userId}, 'access', { expiresIn: '20s'})
             res.json({ token: accessToken })
         } else {
             res.json({ error: "2 Sessione non valida. L'utente non è autenticato."})
